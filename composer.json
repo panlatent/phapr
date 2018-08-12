@@ -1,0 +1,46 @@
+{
+    "name": "panlatent/phapr",
+    "description": "Phapr is an expressive PHP project build system",
+    "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "build"
+    ],
+    "homepage": "https://panlatent.com/phapr",
+    "authors": [
+        {
+            "name": "panlatent",
+            "email": "panlatent@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "monolog/monolog": "~1.20",
+        "symfony/console": "^4.0",
+        "symfony/expression-language": "^4.1",
+        "symfony/filesystem": "~4.0",
+        "symfony/finder": "^4.0",
+        "symfony/process": "^4.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.4",
+        "php-coveralls/php-coveralls": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phapr\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phapr\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
