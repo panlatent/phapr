@@ -31,6 +31,8 @@ Usage
 Documentation
 -------------
 
++ Read the [Documentation](https://phapr.com/).
+
 Community
 ---------
 
