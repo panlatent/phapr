@@ -13,6 +13,7 @@ $filesystem = phapr('import filesystem'); // Import filesystem module, can use $
 
 // The phapr() default returns build module.
 phapr()->task('init', function(Filesystem $filesystem) {
+    echo 'Checking composer vendor directory ... ' . PHP_EOL;
     if ($filesystem->exists('vendor')) {
         echo 'Vendor directory already exists!' . PHP_EOL;
     }

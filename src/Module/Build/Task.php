@@ -8,6 +8,7 @@ namespace Phapr\Module\Build;
 
 use Phapr\Container;
 use Phapr\Exception;
+use Phapr\Io;
 
 /**
  * Class Task
@@ -113,11 +114,25 @@ class Task
             throw new Exception("cannot be executed a task again");
         }
 
+        /** @var Io $io */
+        $io = $container->get(Io::class);
+
         if ($this->definition instanceof \Closure) {
             $this->definition->bindTo($this, $this);
         }
 
+        ob_start(function($content) use($io) {
+            if (($pos = strpos($content, PHP_EOL)) === false) {
+                return $content;
+            }
+            $buffer = substr($content, 0, $pos);
+            $io->writeln("<info>[Echo]</info> $buffer");
+
+            return substr($content, $pos + 1);
+        }, 2);
         $this->result = $container->call($this->definition, $params);
+        ob_end_clean();
+
 
         $this->isDone;
     }

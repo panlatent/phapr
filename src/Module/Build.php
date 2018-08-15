@@ -8,6 +8,7 @@ namespace Phapr\Module;
 
 use Phapr\Container;
 use Phapr\Exception;
+use Phapr\Io;
 use Phapr\Module;
 use Phapr\Module\Build\DependencyException;
 use Phapr\Module\Build\Task;
@@ -31,6 +32,10 @@ class Build extends Module implements ModuleInterface
      */
     protected $container;
     /**
+     * @var Io
+     */
+    protected $io;
+    /**
      * @var string|null
      */
     protected $name;
@@ -43,10 +48,16 @@ class Build extends Module implements ModuleInterface
      */
     protected $tasks;
 
-    public function __construct(Phapr $phapr, Container $container)
+    public function __construct(Phapr $phapr, Container $container, Io $io)
     {
         $this->phapr = $phapr;
         $this->container = $container;
+        $this->io = $io;
+    }
+
+    public static function displayVersion(): string
+    {
+        return '0.1-dev';
     }
 
     public function name($name)
@@ -106,6 +117,10 @@ class Build extends Module implements ModuleInterface
      */
     public function run(string $name = null)
     {
+        $this->io->writeln("Phapr PHP Build Framework <info>v" . Phapr::VERSION . "</info>");
+        $this->io->writeln(static::displayName() . " Module " . static::displayVersion());
+        $this->io->writeln('');
+
         if ($name === null) {
             $name = $this->default;
         }
@@ -113,12 +128,17 @@ class Build extends Module implements ModuleInterface
             throw new Exception("Not found task: {$name}");
         }
 
+        $this->io->writeln("<info>Starting task $name: </info>");
+
         /** @var Task[] $chains */
         $chains = [];
         $this->resolve($this->tasks[$name], $chains);
         $chains = array_reverse($chains);
 
         foreach ($chains as $task) {
+            $this->io->writeln('');
+            $this->io->writeln("=> <comment>Run {$task->getName()} task:</comment> ");
+
             $task->run($this->container);
         }
     }

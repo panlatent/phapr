@@ -17,7 +17,14 @@ Interface ModuleInterface
     /**
      * The module display name.
      *
-     * @return bool
+     * @return string
      */
-    public static function displayName(): bool;
+    public static function displayName(): string;
+
+    /**
+     * The module version.
+     *
+     * @return string
+     */
+    public static function displayVersion(): string;
 }
