@@ -18,3 +18,13 @@ if (!function_exists('phapr')) {
         return \Phapr\Phapr::$phapr->getExpression()->evaluate($expr);
     }
 }
+
+if (!function_exists('echoln')) {
+    /**
+     * @param string $message
+     */
+    function echoln(string $message)
+    {
+        echo $message, PHP_EOL;
+    }
+}
