@@ -6,6 +6,7 @@
 
 namespace Phapr\Command;
 
+use Phapr\Io;
 use Phapr\Script;
 use Phapr\Phapr;
 use Symfony\Component\Console\Command\Command;
@@ -46,6 +47,7 @@ class Run extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->phapr = new Phapr();
+        $this->phapr->set(Io::class, new Io($input, $output));
 
         $filename = $input->getOption('build');
 
