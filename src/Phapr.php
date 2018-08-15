@@ -58,11 +58,20 @@ class Phapr
 
     /**
      * @param string $name
-     * @return object
+     * @param bool $throwException
+     * @return object|null
      */
-    public function get(string $name)
+    public function get(string $name, bool $throwException = true)
     {
-        return $this->container->get($name);
+        try {
+            return $this->container->get($name);
+        } catch (\Exception $e) {
+            if (!$throwException) {
+                return null;
+            }
+        }
+
+        throw $e;
     }
 
     /**
@@ -74,36 +83,48 @@ class Phapr
     {
         if (is_object($concrete) && ! $concrete instanceof \Closure) {
             $this->container->instance($abstract, $concrete);
+            if ($abstract !== get_class($concrete)) {
+                $this->container->alias($abstract, get_class($concrete));
+            }
         } else {
             $this->container->bind($abstract, $concrete, $isService);
         }
     }
 
     /**
-     * @return Build
+     * @return Build|null
      */
-    public function getBuild(): Build
+    public function getBuild()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->get('build');
+        return $this->get('build', false);
     }
 
     /**
-     * @return Engine
+     * @return Engine|null
      */
-    public function getExpression(): Engine
+    public function getExpression()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->get('expression');
+        return $this->get('expression', false);
     }
 
     /**
-     * @return Filesystem
+     * @return Filesystem|null
      */
-    public function getFilesystem(): Filesystem
+    public function getFilesystem()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->get('filesystem');
+        return $this->get('filesystem', false);
+    }
+
+    /**
+     * @return Io|null
+     */
+    public function getIo()
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->get('io', false);
     }
 
     /**
@@ -111,13 +132,13 @@ class Phapr
      */
     private function registerCoreModules()
     {
-        $this->container->singleton('build', function() {
+        $this->set('build', function() {
             return $this->container->make(Build::class);
         });
-        $this->container->singleton('expression', function() {
+        $this->set('expression', function() {
             return $this->container->make(Engine::class);
         });
-        $this->container->singleton('filesystem', function() {
+        $this->set('filesystem', function() {
             return $this->container->make(Filesystem::class);
         });
     }

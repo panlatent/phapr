@@ -15,7 +15,7 @@ $filesystem = phapr('import filesystem'); // Import filesystem module, can use $
 phapr()->task('init', function(Filesystem $filesystem) {
     echo 'Checking composer vendor directory ... ' . PHP_EOL;
     if ($filesystem->exists('vendor')) {
-        echo 'Vendor directory already exists!' . PHP_EOL;
+        echoln('Vendor directory already exists!'); // Phapr provide a helper function.
     }
 }, []);
 
