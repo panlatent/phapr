@@ -3,7 +3,7 @@ Phapr
 Phapr is an expressive PHP project build system.
 
 [![Build Status](https://travis-ci.org/panlatent/phapr.svg)](https://travis-ci.org/panlatent/phapr)
-[![Coverage Status](https://coveralls.io/repos/github/panlatent/phapr/badge.svg?branch=master)](https://coveralls.io/github/panlatent/phapr?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/panlatent/phapr/badge.svg)](https://coveralls.io/github/panlatent/phapr)
 [![Latest Stable Version](https://poser.pugx.org/phapr/phapr/v/stable.svg)](https://packagist.org/packages/phapr/phapr)
 [![Total Downloads](https://poser.pugx.org/phapr/phapr/downloads.svg)](https://packagist.org/packages/phapr/phapr) 
 [![Latest Unstable Version](https://poser.pugx.org/phapr/phapr/v/unstable.svg)](https://packagist.org/packages/phapr/phapr)
