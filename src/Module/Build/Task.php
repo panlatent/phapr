@@ -122,13 +122,16 @@ class Task
         }
 
         ob_start(function($content) use($io) {
+            static $buffer = '';
             if (($pos = strpos($content, PHP_EOL)) === false) {
-                return $content;
+                $buffer .= $content;
+                return '';
             }
-            $buffer = substr($content, 0, $pos);
-            $io->writeln("<info>[Echo]</info> $buffer");
+            $output = $buffer . substr($content, 0, $pos);
+            $io->writeln("<info>[Echo]</info> $output");
+            $buffer = substr($content, $pos + 1);
 
-            return substr($content, $pos + 1);
+            return '';
         }, 2);
         $this->result = $container->call($this->definition, $params);
         ob_end_clean();
