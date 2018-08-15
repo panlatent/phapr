@@ -17,12 +17,18 @@
     "require": {
         "php": ">=7.1",
         "guzzlehttp/guzzle": "^6.3",
+        "illuminate/container": "~5.6",
         "monolog/monolog": "~1.20",
-        "symfony/console": "^4.0",
+        "phpdocumentor/reflection-docblock": "^4.0",
+        "symfony/console": "^4.1",
+        "symfony/css-selector": "^4.1",
+        "symfony/dom-crawler": "^4.1",
         "symfony/expression-language": "^4.1",
-        "symfony/filesystem": "~4.0",
-        "symfony/finder": "^4.0",
-        "symfony/process": "^4.0"
+        "symfony/filesystem": "~4.1",
+        "symfony/finder": "^4.1",
+        "symfony/process": "^4.1",
+        "symfony/event-dispatcher": "^4.1",
+        "symfony/yaml": "^4.1"
     },
     "require-dev": {
         "codeception/codeception": "^2.4",
@@ -31,7 +37,10 @@
     "autoload": {
         "psr-4": {
             "Phapr\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helper/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -1,0 +1,47 @@
+#!/usr/bin/env php
+<?php
+
+if (!defined('COMPOSER_AUTOLOAD')) {
+    foreach ([
+                 __DIR__ . '/vendor/autoload.php',
+                 __DIR__ . '/../vendor/autoload.php',
+                 __DIR__ . '/../../autoload.php',
+             ] as $file) {
+        if (file_exists($file)) {
+            define('COMPOSER_AUTOLOAD', $file);
+            break;
+        }
+    }
+    unset($file);
+}
+
+if (! defined('COMPOSER_AUTOLOAD')) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+    die(1);
+}
+
+if (version_compare(phpversion(), '7.1.0', '<')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'Phapr is supported on PHP 7.1 or higher' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+/** @noinspection PhpIncludeInspection */
+require_once COMPOSER_AUTOLOAD;
+
+$app = new Phapr\Application('Phapr', Phapr\Phapr::VERSION);
+$app->add(new Phapr\Command\Run('run'));
+$app->run();
