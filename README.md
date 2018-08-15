@@ -31,7 +31,7 @@ Usage
 Documentation
 -------------
 
-+ Read the [Documentation](https://docs.phapr.com/).
++ Read the Documentation: [English](https://docs.phapr.com/) , [Chinese](https://docs.phapr.com/zh/latest/) .
 
 Community
 ---------
