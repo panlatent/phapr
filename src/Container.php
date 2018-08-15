@@ -16,6 +16,6 @@ class Container extends \Illuminate\Container\Container
 {
     public function __construct()
     {
-        $this->singleton(static::class, $this);
+        $this->instance(static::class, $this);
     }
 }

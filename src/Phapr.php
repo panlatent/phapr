@@ -23,14 +23,17 @@ class Phapr
      * Phapr version
      */
     const VERSION = '0.1.0';
+
     /**
      * @var static
      */
     public static $phapr;
+
     /**
      * @var Container
      */
     protected $container;
+
     /**
      * @var EventDispatcher
      */
@@ -45,9 +48,9 @@ class Phapr
         $this->container = new Container();
         $this->eventDispatcher = new EventDispatcher();
 
-        $this->container->singleton('phapr', $this);
+        $this->container->instance('phapr', $this);
+        $this->container->instance('event', $this->eventDispatcher);
         $this->container->alias('phapr', static::class);
-        $this->container->singleton('event', $this->eventDispatcher);
         $this->container->alias('event', EventDispatcher::class);
 
         $this->registerCoreModules();
@@ -60,6 +63,20 @@ class Phapr
     public function get(string $name)
     {
         return $this->container->get($name);
+    }
+
+    /**
+     * @param string $abstract
+     * @param \Closure|string|null $concrete
+     * @param bool $isService
+     */
+    public function set(string $abstract, $concrete, bool $isService = true)
+    {
+        if (is_object($concrete) && ! $concrete instanceof \Closure) {
+            $this->container->instance($abstract, $concrete);
+        } else {
+            $this->container->bind($abstract, $concrete, $isService);
+        }
     }
 
     /**
@@ -95,13 +112,13 @@ class Phapr
     private function registerCoreModules()
     {
         $this->container->singleton('build', function() {
-            return new Build($this, $this->container);
+            return $this->container->make(Build::class);
         });
         $this->container->singleton('expression', function() {
-            return new Engine($this);
+            return $this->container->make(Engine::class);
         });
         $this->container->singleton('filesystem', function() {
-            return new Filesystem();
+            return $this->container->make(Filesystem::class);
         });
     }
 }
