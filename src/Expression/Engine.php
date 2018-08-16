@@ -97,7 +97,6 @@ class Engine extends ExpressionLanguage
             return new ContainerVariable($container, $id);
         }, $services));
 
-//        var_dump($services['env']);die();
         return parent::evaluate($expression, array_merge($services, $values));
     }
 
