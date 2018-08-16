@@ -133,7 +133,6 @@ class Build extends Module implements ModuleInterface
         /** @var Task[] $chains */
         $chains = [];
         $this->resolve($this->tasks[$name], $chains);
-        $chains = array_reverse($chains);
 
         foreach ($chains as $task) {
             $this->io->writeln('');
