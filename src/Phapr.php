@@ -8,6 +8,7 @@ namespace Phapr;
 
 use Phapr\Expression\Engine;
 use Phapr\Module\Build;
+use Phapr\Module\Environment;
 use Phapr\Module\Filesystem;
 use Phapr\Module\Process;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -36,6 +37,11 @@ class Phapr
     protected $container;
 
     /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
      * @var Engine
      */
     protected $expression;
@@ -54,18 +60,21 @@ class Phapr
      * Phapr constructor.
      *
      * @param Io $io
+     * @param Context $context
      */
-    public function __construct(Io $io)
+    public function __construct(Io $io, Context $context)
     {
         static::$phapr = $this;
 
         $this->io = $io;
+        $this->context = $context;
         $this->container = new Container();
         $this->expression = new Engine($this);
         $this->eventDispatcher = new EventDispatcher();
 
         $this->set('phapr', $this);
         $this->set('io', $io);
+        $this->set('context', $context);
         $this->set('expression', $this->expression);
         $this->set('event', $this->eventDispatcher);
 
@@ -108,6 +117,14 @@ class Phapr
     }
 
     /**
+     * @return Container
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
+    }
+
+    /**
      * @return Engine
      */
     public function getExpression(): Engine
@@ -133,6 +150,15 @@ class Phapr
     }
 
     /**
+     * @return Environment|null
+     */
+    public function getEnvironment()
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->get('env', false);
+    }
+
+    /**
      * @return Filesystem|null
      */
     public function getFilesystem()
@@ -148,6 +174,9 @@ class Phapr
     {
         $this->set('build', function() {
             return $this->container->make(Build::class);
+        });
+        $this->set('env', function() {
+            return $this->container->make(Environment::class);
         });
         $this->set('filesystem', function() {
             return $this->container->make(Filesystem::class);

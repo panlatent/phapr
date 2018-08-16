@@ -85,6 +85,23 @@ class Engine extends ExpressionLanguage
     }
 
     /**
+     * @param string|\Symfony\Component\ExpressionLanguage\Expression $expression
+     * @param array $values
+     * @return mixed
+     */
+    public function evaluate($expression, $values = [])
+    {
+        $container = $this->phapr->getContainer();
+        $services = array_keys($container->getBindings());
+        $services = array_combine($services, array_map(function($id) use ($container) {
+            return new ContainerVariable($container, $id);
+        }, $services));
+
+//        var_dump($services['env']);die();
+        return parent::evaluate($expression, array_merge($services, $values));
+    }
+
+    /**
      * @return Parser
      */
     private function getParser(): Parser

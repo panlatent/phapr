@@ -6,6 +6,7 @@
 
 namespace Phapr\Command;
 
+use Phapr\Context;
 use Phapr\Error\AbortScriptException;
 use Phapr\Io;
 use Phapr\Script;
@@ -51,7 +52,9 @@ class Run extends Command
         $stopwatch = new Stopwatch();
 
         $io = new Io($input, $output);
-        $this->phapr = new Phapr($io);
+        $context = new Context();
+
+        $this->phapr = new Phapr($io, $context);
         $filename = $input->getOption('build');
 
         $filesystem = $this->phapr->getFilesystem();
@@ -59,6 +62,7 @@ class Run extends Command
             $output->writeln("<error>Not found build file: {$filename}</error>");
             return 1;
         }
+        $context->root = dirname($filename);
 
         $stopwatch->start('script:execute');
         try {
