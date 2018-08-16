@@ -9,6 +9,7 @@ namespace Phapr;
 use Phapr\Expression\Engine;
 use Phapr\Module\Build;
 use Phapr\Module\Filesystem;
+use Phapr\Module\Process;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -35,6 +36,11 @@ class Phapr
     protected $container;
 
     /**
+     * @var Engine
+     */
+    protected $expression;
+
+    /**
      * @var EventDispatcher
      */
     protected $eventDispatcher;
@@ -55,10 +61,12 @@ class Phapr
 
         $this->io = $io;
         $this->container = new Container();
+        $this->expression = new Engine($this);
         $this->eventDispatcher = new EventDispatcher();
 
-        $this->set('io', $io);
         $this->set('phapr', $this);
+        $this->set('io', $io);
+        $this->set('expression', $this->expression);
         $this->set('event', $this->eventDispatcher);
 
         $this->registerCoreModules();
@@ -100,21 +108,28 @@ class Phapr
     }
 
     /**
+     * @return Engine
+     */
+    public function getExpression(): Engine
+    {
+        return $this->expression;
+    }
+
+    /**
+     * @return Io
+     */
+    public function getIo(): Io
+    {
+        return $this->io;
+    }
+
+    /**
      * @return Build|null
      */
     public function getBuild()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->get('build', false);
-    }
-
-    /**
-     * @return Engine|null
-     */
-    public function getExpression()
-    {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->get('expression', false);
     }
 
     /**
@@ -127,14 +142,6 @@ class Phapr
     }
 
     /**
-     * @return Io
-     */
-    public function getIo(): Io
-    {
-        return $this->io;
-    }
-
-    /**
      * Register core modules.
      */
     private function registerCoreModules()
@@ -142,11 +149,11 @@ class Phapr
         $this->set('build', function() {
             return $this->container->make(Build::class);
         });
-        $this->set('expression', function() {
-            return $this->container->make(Engine::class);
-        });
         $this->set('filesystem', function() {
             return $this->container->make(Filesystem::class);
+        });
+        $this->set('process', function() {
+            return $this->container->make(Process::class);
         });
     }
 }
