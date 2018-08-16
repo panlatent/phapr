@@ -40,18 +40,26 @@ class Phapr
     protected $eventDispatcher;
 
     /**
-     * Phapr constructor.
+     * @var Io
      */
-    public function __construct()
+    protected $io;
+
+    /**
+     * Phapr constructor.
+     *
+     * @param Io $io
+     */
+    public function __construct(Io $io)
     {
         static::$phapr = $this;
+
+        $this->io = $io;
         $this->container = new Container();
         $this->eventDispatcher = new EventDispatcher();
 
-        $this->container->instance('phapr', $this);
-        $this->container->instance('event', $this->eventDispatcher);
-        $this->container->alias('phapr', static::class);
-        $this->container->alias('event', EventDispatcher::class);
+        $this->set('io', $io);
+        $this->set('phapr', $this);
+        $this->set('event', $this->eventDispatcher);
 
         $this->registerCoreModules();
     }
@@ -119,12 +127,11 @@ class Phapr
     }
 
     /**
-     * @return Io|null
+     * @return Io
      */
-    public function getIo()
+    public function getIo(): Io
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->get('io', false);
+        return $this->io;
     }
 
     /**

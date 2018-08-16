@@ -46,9 +46,7 @@ class Run extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->phapr = new Phapr();
-        $this->phapr->set(Io::class, new Io($input, $output));
-
+        $this->phapr = new Phapr(new Io($input, $output));
         $filename = $input->getOption('build');
 
         $filesystem = $this->phapr->getFilesystem();
