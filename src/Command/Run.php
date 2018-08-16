@@ -10,6 +10,7 @@ use Phapr\Error\AbortScriptException;
 use Phapr\Io;
 use Phapr\Script;
 use Phapr\Phapr;
+use Phapr\Stopwatch;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,7 +48,10 @@ class Run extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->phapr = new Phapr(new Io($input, $output));
+        $stopwatch = new Stopwatch();
+
+        $io = new Io($input, $output);
+        $this->phapr = new Phapr($io);
         $filename = $input->getOption('build');
 
         $filesystem = $this->phapr->getFilesystem();
@@ -56,13 +60,21 @@ class Run extends Command
             return 1;
         }
 
+        $stopwatch->start('script:execute');
         try {
             $script = new Script($filename);
             $script->execute();
         } catch (AbortScriptException $e) {
-            return $e->getCode();
+            $exitCode = $e->getCode();
         }
 
-        return 0;
+        $sEvent = $stopwatch->stop('script:execute');
+        $io->writeln('');
+        $io->writeln(sprintf("Time: %sms, Memory: %sMB",
+            $sEvent->getDuration(),
+            round($sEvent->getMemory() / 1024 / 1024, 2)
+        ));
+
+        return $exitCode ?? 0;
     }
 }
