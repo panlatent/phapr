@@ -138,8 +138,14 @@ class Build extends Module implements ModuleInterface
         foreach ($chains as $task) {
             $this->io->writeln('');
             $this->io->writeln("=> <comment>Run {$task->getName()} task:</comment> ");
+            try {
+                $task->run($this->container);
+            } catch (\Throwable $e) {
+                $this->io->writeln('');
+                $this->io->writeln("<error>Build Failed on “{$task->getName()}“ task.</error>");
 
-            $task->run($this->container);
+                throw $e;
+            }
         }
     }
 

@@ -7,6 +7,7 @@
  */
 
 use Phapr\Module\Filesystem;
+use Phapr\Module\Process;
 
 $phapr = phapr('import self'); // Import Phapr, can use $phapr
 $filesystem = phapr('import filesystem'); // Import filesystem module, can use $filesystem and inject task same name argument.
@@ -20,11 +21,13 @@ phapr()->task('init', function(Filesystem $filesystem) {
 }, []);
 
 phapr()->task('install', function() {
-    echo 'Install something' . PHP_EOL;
+    echoln('Install something');
 }, ['init']);
 
-phapr()->task('build', function() {
-    echo 'Build something' . PHP_EOL;
+phapr()->task('build', function(Process $process) {
+    echoln('Build something ...');
+
+    $process->exec('ls -al');
 }, ['install']);
 
 phapr()->run('build');

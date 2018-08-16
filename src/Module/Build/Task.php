@@ -132,8 +132,10 @@ class Task
             $buffer = substr($content, $pos + 1);
 
             return '';
-        }, 2);
+        }, 1);
+
         $this->result = $container->call($this->definition, $params);
+
         ob_end_clean();
 
 

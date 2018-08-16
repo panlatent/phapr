@@ -6,6 +6,7 @@
 
 namespace Phapr\Command;
 
+use Phapr\Error\AbortScriptException;
 use Phapr\Io;
 use Phapr\Script;
 use Phapr\Phapr;
@@ -55,8 +56,12 @@ class Run extends Command
             return 1;
         }
 
-        $script = new Script($filename);
-        $script->execute();
+        try {
+            $script = new Script($filename);
+            $script->execute();
+        } catch (AbortScriptException $e) {
+            return $e->getCode();
+        }
 
         return 0;
     }
