@@ -31,6 +31,3 @@ phapr()->task('build', function(Process $process) {
 }, ['install']);
 
 phapr()->run('build');
-
-
-

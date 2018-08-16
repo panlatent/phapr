@@ -6,6 +6,7 @@
 
 namespace Phapr;
 
+use Phapr\Error\AbortScriptException;
 use SplFileInfo;
 
 /**
@@ -53,11 +54,13 @@ class Script
 
     /**
      * Require script file.
+     * @noinspection PhpDocRedundantThrowsInspection
+     * @throws \Throwable|AbortScriptException
      */
     public function execute()
     {
-        /** @noinspection PhpIncludeInspection */
-        require $this->filename;
+       /** @noinspection PhpIncludeInspection */
+       require $this->filename;
     }
 
     /**
