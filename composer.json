@@ -1,6 +1,6 @@
 {
     "name": "phapr/phapr",
-    "description": "Phapr is an expressive PHP project build system",
+    "description": "Phapr is an expressive PHP project build framework",
     "type": "library",
     "license": "MIT",
     "keywords": [
