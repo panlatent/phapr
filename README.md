@@ -48,6 +48,20 @@ $ composer global require --prefer-dist phapr/phapr
 
 This will install the library and all required dependencies. The project requires **PHP 7.1** or newer.
 
+Suggest you add the Composer global `vendor/bin` to the system environment variable:
+
+   > Please replace COMPOSER_HOME to your composer global path.
+   
+Bash:
+```bash
+echo 'export PATH="COMPOSER_HOME/vendor/bin:$PATH"' >> ~/.bashrc
+```
+
+Zsh:
+```bash
+echo 'export PATH="COMPOSER_HOME/vendor/bin:$PATH"' >> ~/.zshrc
+```
+
 Usage
 -----
 
